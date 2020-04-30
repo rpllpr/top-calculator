@@ -20,30 +20,63 @@ function divideCalc (a, b) {
 
 function operate (operators, operands) {
     // console.log(operators);
-    const numOperands = operands.map(str => Number(str));
+    let numOperands = operands.map(str => Number(str));
     // console.log(numOperands);
     
-    const ret = operators.reduce((reducedArray,operator,operatorIndex) => {
+    operators.map((operator, operatorIndex) => {
         if (operator==='\*') {
-            const retNum = multiplyCalc(numOperands[operatorIndex],numOperands[operatorIndex+1]);
-            reducedArray= reducedArray.concat(numOperands.slice(0,operatorIndex),retNum,numOperands.slice(operatorIndex+2));
-            console.log(numOperands.slice(0,operatorIndex));
-            console.log(numOperands.slice(operatorIndex+2));
-            console.log(reducedArray);
+            const arrayItemCalc = multiplyCalc(numOperands[operatorIndex],numOperands[operatorIndex+1]);
+            numOperands[operatorIndex] = ' ';
+            numOperands[operatorIndex+1] = arrayItemCalc;
         }
-    return reducedArray;
-    },[]);
-    // console.log(ret);
+        if (operator==='\/') {
+            const arrayItemCalc = divideCalc(numOperands[operatorIndex],numOperands[operatorIndex+1]);
+            numOperands[operatorIndex] = ' ';
+            numOperands[operatorIndex+1] = arrayItemCalc;
+        }
+    return operator;
+    });
+    
+    numOperands = numOperands.filter(item => {
+        const regex = RegExp(' ');
+        return !regex.test(item);
+    });
+    
+    operators = operators.filter(item => {
+        //const regex = RegExp('\\*');
+        const regex = /\*|\//;
+        return !regex.test(item);
+    });
 
-    // if (operators==='\+') {
-    //     return addCalc(a,b);
-    // } else if (operators==='\-') {
-    //     return subtractCalc(a,b);
-    // } else if (operators==='\*') {
-    //     return multiplyCalc(a,b);
-    // } else {
-    //     return divideCalc(a,b);
-    // }
+    operators.map((operator, operatorIndex) => {
+        if (operator==='\+') {
+            const arrayItemCalc = addCalc(numOperands[operatorIndex],numOperands[operatorIndex+1]);
+            numOperands[operatorIndex] = ' ';
+            numOperands[operatorIndex+1] = arrayItemCalc;
+        }
+        if (operator==='\-') {
+            const arrayItemCalc = subtractCalc(numOperands[operatorIndex],numOperands[operatorIndex+1]);
+            numOperands[operatorIndex] = ' ';
+            numOperands[operatorIndex+1] = arrayItemCalc;
+        }
+    return operator;
+    });
+    
+    numOperands = numOperands.filter(item => {
+        const regex = RegExp(' ');
+        return !regex.test(item);
+    });
+    
+    operators = operators.filter(item => {
+        //const regex = RegExp('\\*');
+        const regex = /\+|\-/;
+        return !regex.test(item);
+    });
+
+    console.log(operators);
+    console.log(numOperands);
+    return numOperands;
+
 }
 
 function evaluateInput(e) {
