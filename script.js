@@ -1,5 +1,4 @@
-const display = document.querySelector('.display-p');
-let operator = '';
+let operators = [];
 let operands = [];  
 let operandsIndex = 0;
 
@@ -19,32 +18,46 @@ function divideCalc (a, b) {
     return a/b;
 }
 
-function operate (operator, a, b) {
-    if (operator==='\+') {
-        return addCalc(a,b);
-    } else if (operator==='\-') {
-        return subtractCalc(a,b);
-    } else if (operator==='\*') {
-        return multiplyCalc(a,b);
-    } else {
-        return divideCalc(a,b);
-    }
+function operate (operators, operands) {
+    // console.log(operators);
+    const numOperands = operands.map(str => Number(str));
+    // console.log(numOperands);
+    
+    const ret = operators.reduce((reducedArray,operator,operatorIndex) => {
+        if (operator==='\*') {
+            const retNum = multiplyCalc(numOperands[operatorIndex],numOperands[operatorIndex+1]);
+            reducedArray= reducedArray.concat(numOperands.slice(0,operatorIndex),retNum,numOperands.slice(operatorIndex+2));
+            console.log(numOperands.slice(0,operatorIndex));
+            console.log(numOperands.slice(operatorIndex+2));
+            console.log(reducedArray);
+        }
+    return reducedArray;
+    },[]);
+    // console.log(ret);
+
+    // if (operators==='\+') {
+    //     return addCalc(a,b);
+    // } else if (operators==='\-') {
+    //     return subtractCalc(a,b);
+    // } else if (operators==='\*') {
+    //     return multiplyCalc(a,b);
+    // } else {
+    //     return divideCalc(a,b);
+    // }
 }
 
 function evaluateInput(e) {
     if (e.target.textContent==='\=') {
-        console.log(operator,operands);
-        replaceDisplay(operate(operator, Number(operands[0]), Number(operands[1])));
+        replaceDisplay(operate(operators, operands));
     } else if (e.target.textContent==='\+'||e.target.textContent==='\-'||e.target.textContent==='\*'||e.target.textContent==='\/') {
-        operator = e.target.textContent;
+        operators.push(e.target.textContent);
         operandsIndex++;
-        addToDisplay(operator);
+        addToDisplay(e.target.textContent);
     } else if (e.target.textContent==='CE') {
-        operator = '';
+        operators = [];
         operands = [];  
         operandsIndex = 0;
         replaceDisplay('');
-        //console.log(operator,operands);
     } else {
         let t = operands[operandsIndex];
         if (operands[operandsIndex]==undefined) {
@@ -52,7 +65,6 @@ function evaluateInput(e) {
         } else {
             operands[operandsIndex] = t+e.target.textContent;
         }
-        // console.log(operands[operandsIndex]);
         addToDisplay(e.target.textContent);
     }
 
@@ -66,5 +78,6 @@ function replaceDisplay (result) {
     display.textContent = result;
 }
 
+const display = document.querySelector('.display-p');
 const btns = Array.from(document.querySelectorAll('.button-div'));
 btns.forEach(btn => btn.addEventListener('click', evaluateInput));
