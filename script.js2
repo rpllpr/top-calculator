@@ -19,7 +19,9 @@ function divideCalc (a, b) {
 }
 
 function operate (operators, operands) {
+    // console.log(operators);
     let numOperands = operands.map(str => Number(str));
+    // console.log(numOperands);
     
     operators.map((operator, operatorIndex) => {
         if (operator==='\*') {
@@ -41,6 +43,7 @@ function operate (operators, operands) {
     });
     
     operators = operators.filter(item => {
+        //const regex = RegExp('\\*');
         const regex = /\*|\//;
         return !regex.test(item);
     });
@@ -65,25 +68,20 @@ function operate (operators, operands) {
     });
     
     operators = operators.filter(item => {
+        //const regex = RegExp('\\*');
         const regex = /\+|\-/;
         return !regex.test(item);
     });
 
+    console.log(operators);
+    console.log(numOperands);
     return numOperands;
+
 }
 
-function chngToNum(num) {
-    num = num[0];
-    if (num.toString().length > 8) { //change to exponential notation if larger than 8 digits
-        num = num.toExponential(5);
-    } 
-    return num;
-} 
-
 function evaluateInput(e) {
-    
     if (e.target.textContent==='\=') {
-        replaceDisplay(chngToNum(operate(operators, operands)));
+        replaceDisplay(operate(operators, operands));
     } else if (e.target.textContent==='\+'||e.target.textContent==='\-'||e.target.textContent==='\*'||e.target.textContent==='\/') {
         operators.push(e.target.textContent);
         operandsIndex++;
