@@ -33,7 +33,7 @@ function operate (operators, operands) {
             numOperands[operatorIndex] = ' ';
             numOperands[operatorIndex+1] = arrayItemCalc;
         }
-    return operator;
+        return operator;
     });
     
     numOperands = numOperands.filter(item => {
@@ -57,7 +57,7 @@ function operate (operators, operands) {
             numOperands[operatorIndex] = ' ';
             numOperands[operatorIndex+1] = arrayItemCalc;
         }
-    return operator;
+        return operator;
     });
     
     numOperands = numOperands.filter(item => {
@@ -85,7 +85,6 @@ function chngToNum(num) {
 function evaluateInput(e) {
     
     if (e.target.textContent==='\=' && operands.length>=2) {
-        // replaceDisplay(chngToNum(operate(operators, operands)));
         const output = chngToNum(operate(operators, operands));
         replaceDisplay(output);
         calcJustPerformed = true;
@@ -123,7 +122,6 @@ function evaluateInput(e) {
         }
         addToDisplay(e.target.textContent);
     }
-
 }
 
 function addToDisplay (char) {
