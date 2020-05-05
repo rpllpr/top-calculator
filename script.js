@@ -75,18 +75,16 @@ function operate (operators, operands) {
 
 function chngToNum(num) {
     num = num[0];
-    console.log(typeof(num));
     if (num.toString().length > 8) { //change to exponential notation if larger than 8 digits
         num = num.toExponential(5);
     }
     num = num.toString();
-    console.log(typeof(num)); 
     return num;
 } 
 
 function evaluateInput(e) {
     
-    if (e.target.textContent==='\=') {
+    if (e.target.textContent==='\=' && operands.length>=2) {
         // replaceDisplay(chngToNum(operate(operators, operands)));
         const output = chngToNum(operate(operators, operands));
         replaceDisplay(output);
@@ -109,7 +107,7 @@ function evaluateInput(e) {
         operandsIndex = 0;
         calcJustPerformed = false;
         replaceDisplay('');
-    } else {
+    } else if ((/[0-9]/i).test(e.target.textContent)) {
         if (calcJustPerformed===true) {
             operators = [];
             operands = [];  
