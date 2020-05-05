@@ -1,7 +1,6 @@
 let operators = [];
 let operands = [];  
 let operandsIndex = 0;
-let calcJustPerformed = false;
 
 function addCalc (a, b) {
     return a+b;
@@ -75,31 +74,17 @@ function operate (operators, operands) {
 
 function chngToNum(num) {
     num = num[0];
-    console.log(typeof(num));
     if (num.toString().length > 8) { //change to exponential notation if larger than 8 digits
         num = num.toExponential(5);
-    }
-    num = num.toString();
-    console.log(typeof(num)); 
+    } 
     return num;
 } 
 
 function evaluateInput(e) {
     
     if (e.target.textContent==='\=') {
-        // replaceDisplay(chngToNum(operate(operators, operands)));
-        const output = chngToNum(operate(operators, operands));
-        replaceDisplay(output);
-        calcJustPerformed = true;
-        operators = [];
-        operands = [];
-        operatorIndex = 0;
-        operands[0] = output;
+        replaceDisplay(chngToNum(operate(operators, operands)));
     } else if (e.target.textContent==='\+'||e.target.textContent==='\-'||e.target.textContent==='\*'||e.target.textContent==='\/') {
-        if (calcJustPerformed===true) {
-            operandsIndex = 0;
-            calcJustPerformed=false;
-        }
         operators.push(e.target.textContent);
         operandsIndex++;
         addToDisplay(e.target.textContent);
@@ -107,16 +92,8 @@ function evaluateInput(e) {
         operators = [];
         operands = [];  
         operandsIndex = 0;
-        calcJustPerformed = false;
         replaceDisplay('');
     } else {
-        if (calcJustPerformed===true) {
-            operators = [];
-            operands = [];  
-            operandsIndex = 0;
-            calcJustPerformed = false;
-            replaceDisplay('');            
-        }
         let t = operands[operandsIndex];
         if (operands[operandsIndex]==undefined) {
             operands[operandsIndex] = e.target.textContent;
